@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
@@ -8,6 +9,7 @@ io.on('connection', socket => {
 });
 const port = 8000
 
+app.use(bodyParser.json());
 app.get('/', (req, res) => res.send('Hello World!'))
 app.post('/stream', function(req, res) {
   io.emit('data', req.body);
