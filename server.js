@@ -11,7 +11,7 @@ const port = 8000
 app.get('/', (req, res) => res.send('Hello World!'))
 app.post('/stream', function(req, res) {
   io.emit('data', req.body);
-  res.status(204);
+  res.status(200).json(req.body);
 });
 
 app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`))
