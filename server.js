@@ -3,18 +3,16 @@ const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io').listen(server);
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+const io = require('socket.io')(app);
+// io.configure(function () { 
+//   io.set("transports", ["xhr-polling"]); 
+//   io.set("polling duration", 10); 
+// });
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  socket.on('disconnect', () => console.log('Client disconnected'));
 });
-io.sockets.on('connection', function (socket) {
-  io.sockets.emit('status', { status: status }); // note the use of io.sockets to emit but socket.on to listen
-  socket.on('reset', function (data) {
-    status = "War is imminent!";
-    io.sockets.emit('status', { status: status });
-  });
-});
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 const port = 8000
 
 app.use(bodyParser.json());
