@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.send('Hello World!'))
 app.post('/stream', function(req, res) {
   io.emit('data', req.body);
-  console.log(req.body, req);
+  console.log(req.body);
   res.status(200).json(req.body);
 });
 
