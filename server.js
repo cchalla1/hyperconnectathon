@@ -11,6 +11,7 @@ const port = 8000
 app.get('/', (req, res) => res.send('Hello World!'))
 app.post('/stream', function(req, res) {
   io.emit('data', req.body);
+  console.log(req.body, req);
   res.status(200).json(req.body);
 });
 
