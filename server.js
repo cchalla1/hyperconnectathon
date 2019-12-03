@@ -6,7 +6,7 @@ const io = require('socket.io').listen(server);
 io.on('connection', socket => {
   console.log("user connected");
 });
-const port = 3000
+const port = 8000
 
 app.get('/', (req, res) => res.send('Hello World!'))
 app.post('/stream', function(req, res) {
