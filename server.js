@@ -32,4 +32,6 @@ app.post("/stream", function(req, res) {
   res.status(200).json(req.body);
 })
 
-server.listen(process.env.PORT || 8000, function() { });
+server.listen(process.env.PORT || 8000, function() {
+  console.log('server started');
+});
