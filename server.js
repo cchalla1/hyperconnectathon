@@ -38,7 +38,7 @@ app.post("/stream", (req, res) => {
 app.post("/stream/addToCart", (req, res) => {
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
-      const result = {event: req.body.events[0].SKU_ID, data: req.body};
+      const result = {event: req.body.events[0].SKU_ID, data: req.body.events[0]};
       console.log(result, JSON.stringify(result));
       client.send(JSON.stringify(result));
     }
