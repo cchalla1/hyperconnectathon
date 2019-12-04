@@ -2,6 +2,9 @@ var http = require('http');
 const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
+var cors = require('cors');
+
+app.use(cors());
 
 const server = http.createServer(app);
 
