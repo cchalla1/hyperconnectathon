@@ -61,7 +61,7 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
     headers: { Authorization: auth } 
   };
   
-  let endResult = {};
+  let endResult = {quantity: 0};
   request(options, function (error, response) {
     if (error) throw new Error(error);
     let result = JSON.parse(response.body);
