@@ -1,4 +1,5 @@
-var http = require('http');
+const request = require("request");
+const http = require('http');
 const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
@@ -35,7 +36,6 @@ app.post("/stream", (req, res) => {
 })
 
 app.post("/stream/addToCart", (req, res) => {
- console.log(req.body);
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(req.body));
@@ -46,7 +46,36 @@ app.post("/stream/addToCart", (req, res) => {
 
 app.get("/getAddtoCartDetails/:id", (req, res) => {
   let skuId = req.params.id;
-  res.status(200).json({quantity: 5});
+  let username = 'abhishek.a.karmakar@oracle.com';
+  let pass = 'Oracle@123';
+  let auth = 'Basic ' + new Buffer(username + ":" + pass).toString("base64");
+  let options = {
+    method: 'GET',
+    url: 'https://api.oracleinfinity.io/v1/account/hsj8iasxuf/dataexport/wudw40rzgk/data',  
+    qs: {
+      begin: '2019/11/27/00',
+      end: 'latest',
+      format: 'json',
+      timezone: 'Asia/Calcutta'
+    },
+    headers: { Authorization: auth } 
+  };
+  
+  let endResult = {};
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    let result = JSON.parse(response.body);
+    result.dimensions.forEach(dimension => {
+      if (dimension.value == skuId) {
+        dimension.measures.forEach(measure => {
+          if (measure.guid == "Cart Adds") {
+            endResult.quantity = measure.value;
+          }
+        })
+      }
+    })
+    res.status(200).json(endResult);
+  });
 })
 
 server.listen(process.env.PORT || 8000, function() { });
