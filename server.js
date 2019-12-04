@@ -29,24 +29,18 @@ app.get('/', function(req, res) {
 
 app.post("/stream", (req, res) => {
   for (const client in clients) {
-    clients.forEach(client => {
-      console.log(Object.keys(client), client._events);
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(req.body));
-      }
-    });
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(req.body));
+    }
   }
   res.status(200).json(req.body);
 })
 
 app.post("/stream/addToCart", (req, res) => {
   for (const client in clients) {
-    clients.forEach(client => {
-      console.log(Object.keys(client), client._events);
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(req.body));
-      }
-    });
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(req.body));
+    }
   }
   res.status(200).json(req.body);
 })
