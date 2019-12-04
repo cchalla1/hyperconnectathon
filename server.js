@@ -44,7 +44,7 @@ app.post("/stream/addToCart", (req, res) => {
   res.status(200).json(req.body);
 })
 
-app.post("/getAddtoCartDetails/:id", (req, res) => {
+app.get("/getAddtoCartDetails/:id", (req, res) => {
   let skuId = req.params.id;
   res.status(200).json({quantity: 5});
 })
