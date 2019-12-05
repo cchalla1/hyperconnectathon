@@ -20,6 +20,8 @@ wss.on('connection', function connection(ws, req, client) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
+  console.log("****************", "client connected");
+  console.log(wss.clients.length);
 });
 
 app.use(bodyParser.json());
