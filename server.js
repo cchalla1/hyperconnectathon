@@ -69,15 +69,17 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
   request(options, function (error, response) {
     if (error) throw new Error(error);
     let result = JSON.parse(response.body);
-    result.dimensions.forEach(dimension => {
-      if (dimension.value == skuId) {
-        dimension.measures.forEach(measure => {
-          if (measure.guid == "Cart Adds") {
-            endResult.quantity = measure.value;
-          }
-        })
-      }
-    })
+    if (result.dimensions && result.dimensions.length>0) {
+      result.dimensions.forEach(dimension => {
+        if (dimension.value == skuId) {
+          dimension.measures.forEach(measure => {
+            if (measure.guid == "Cart Adds") {
+              endResult.quantity = measure.value;
+            }
+          })
+        }
+      })
+    }
     res.status(200).json(endResult);
   });
 })
