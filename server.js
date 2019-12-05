@@ -110,6 +110,40 @@ app.get("/getMostViewedPage", (req, res) =>{
   });
 });
 
+app.post("/postClientErrors", function(req, res) {
+  const payload = req.body;
+  var options = {
+    method: 'POST',
+    "rejectUnauthorized": false,
+    url: 'https://day384-191101-sql-263h.dq.lan/services/rest/connect/v1.3/incidents',
+    headers:
+    {
+      Authorization: 'Basic YWRtaW46',
+      "Content-Type": "application/json"
+    },
+    json: true,
+    body: {
+      "primaryContact":
+      {
+        "id": 2
+      },
+      "subject": "CHADS Incident 2",
+      "customFields": {
+        "c": {
+          "ic_text": JSON.stringify(payload)
+        }
+      }
+    }
+  };
+  request(options, function (error, response, body) {
+    if (error) console.log(error);
+
+    console.log(body);
+  });
+
+})
+
+ 
 var product_emailMap = {};
 function createProductEmailMapping(details) {
   var orgRequest = details.organizationRequest;
