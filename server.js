@@ -55,9 +55,9 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
   let auth = 'Basic ' + new Buffer(username + ":" + pass).toString("base64");
   let options = {
     method: 'GET',
-    url: 'https://api.oracleinfinity.io/v1/account/hsj8iasxuf/dataexport/wudw40rzgk/data',  
+    url: 'https://api.oracleinfinity.io/v1/account/hsj8iasxuf/dataexport/yxfzoba4k1/data',  
     qs: {
-      begin: '2019/11/27/00',
+      begin: '2019/11/28/00',
       end: 'latest',
       format: 'json',
       timezone: 'Asia/Calcutta'
