@@ -127,7 +127,7 @@ app.post("/postClientErrors", function(req, res) {
       {
         "id": 2
       },
-      "subject": "CHADS Incident 2",
+      "subject": "CHADS Incident "+ payload.errorMessage,
       "customFields": {
         "c": {
           "ic_text": JSON.stringify(payload)
@@ -139,6 +139,7 @@ app.post("/postClientErrors", function(req, res) {
     if (error) console.log(error);
 
     console.log(body);
+    res.status(204);
   });
 
 })
