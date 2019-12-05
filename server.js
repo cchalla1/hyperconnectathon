@@ -80,4 +80,170 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
   });
 })
 
+app.get("/getProductForPage", (req, res) =>{   
+  var username = 'abhishek.a.karmakar@oracle.com';
+  var pass = 'Oracle@123';
+  var auth = 'Basic ' + new Buffer(username + ":" + pass).toString("base64");
+  var options = { method: 'GET',
+  url: 'https://api.oracleinfinity.io/v1/account/hsj8iasxuf/dataexport/o536fzs6d0/data',  
+  qs: { begin: '2019/11/27/00',
+  end: 'latest',
+  format: 'json',
+  timezone: 'Asia/Calcutta' },
+  headers: { Authorization: auth } };
+  request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+    
+    for(var i=0;i<JSON.parse(response.body).dimensions.length;i++){
+        
+      if (JSON.parse(response.body).dimensions[i].value === req.query["page"]) {
+        var options = {
+          method: 'GET',
+          url: 'http://busgk0712.us.oracle.com:8080/ccstoreui/v1/products',
+          qs: {
+            totalResults: 'true',
+            catalogId: 'cloudLakeCatalog',
+            offset: '0',
+            limit: '13',
+            sort: 'creationDate:desc',
+            includeChildren: 'true',
+            preFilter: 'true',
+            fields: 'id,displayName,creationDate'
+          }
+        };
+
+        request(options, function (error, response, body) {
+          if (error) throw new Error(error);
+          console.log(response.body);
+          if (req.query) {
+            res.status(200).json(JSON.parse(response.body).items.slice(0, req.query["count"]));
+          } else {
+            res.status(200).json(JSON.parse(response.body).items[0]);
+          }
+        });
+      }
+    }
+  });
+  
+});
+
+var product_emailMap = {};
+​
+function createProductEmailMapping(details) {
+  var orgRequest = details.organizationRequest;
+  var ownerOfPurchaseList = orgRequest.owner;
+  var email =
+    ownerOfPurchaseList.firstName +
+    "." +
+    ownerOfPurchaseList.lastName +
+    "@oracle.com";
+  var productsList = orgRequest.items;
+  productsList.forEach(function(item) {
+    if (!product_emailMap[item.productId]) {
+      product_emailMap[item.productId] = [];
+    }
+    product_emailMap[item.productId].push(email);
+  });
+  console.log(product_emailMap);
+}
+function generateMergeTriggerRecordsForEmails(emailList) {
+  var mapRecordsFun = function(currentEmail) {
+    var p = {
+      fieldValues: [currentEmail, "some city"],
+      optionalData: [
+        {
+          name: "FIRST_NAME",
+          value: currentEmail
+        },
+        {
+          name: "LAST_NAME",
+          value: currentEmail
+        }
+      ]
+    };
+    return p;
+  };
+  return emailList.map(mapRecordsFun);
+}
+​
+function updateEmailTemplate(productDetails) {
+  var offerEndDate = new Date(productDetails.endDate);
+  var emailContent = `
+  <html>
+  <style>
+  body { background-color: linen;}h1,h2,h3 {color: maroon;  margin-left: 40px;}
+  em{color:RED}
+  </style>
+  <head>
+  <title>Price reduced...</title>
+  </head>
+  <body>
+  <h3>CoAxial Audio cables  is on <em>SALE</em></h3>
+  <h2>BUY @ $${productDetails.listPrice}</h1>
+  <h3>Hurry Up, This Offer is valid till ${offerEndDate}</h1>
+  </body>
+  </html>`;
+  var payLoad = {
+    documentPath: "/contentlibrary/diwakara/f1/new.htm",
+    content: emailContent
+  };
+  restClient.getAuthToken().then(res => {
+    console.log("-------", res.authToken);
+    var authHeader = { Authorization: res.authToken };
+    restClient
+      .makePostCall(
+        "clDocs/contentlibrary/diwakara/f1/new.htm",
+        authHeader,
+        payLoad
+      )
+      .then(res => {
+        console.log("------------123", res);
+      });
+  });
+}
+app.post("/chads/email", function(req, res) {
+  res.send("Hellow World");
+  if (req.body.organizationRequest.owner) {
+    createProductEmailMapping(req.body);
+    return;
+  }
+  console.log("req.body-----", req.body);
+​
+  var productDetails = req.body.organizationRequest;
+  var emailList = product_emailMap[productDetails["productId"]];
+  console.log("emailList for ", emailList);
+  updateEmailTemplate(productDetails);
+  var records = generateMergeTriggerRecordsForEmails(emailList);
+  console.log("----------records generated", records);
+  var email_payload = {
+    mergeTriggerRecordData: {
+      mergeTriggerRecords: records,
+      fieldNames: ["EMAIL_ADDRESS_", "CITY_"]
+    },
+    mergeRule: {
+      htmlValue: "H",
+      matchColumnName1: "EMAIL_ADDRESS_",
+      matchColumnName2: null,
+      optoutValue: "O",
+      insertOnNoMatch: true,
+      defaultPermissionStatus: "OPTIN",
+      rejectRecordIfChannelEmpty: "E",
+      optinValue: "I",
+      updateOnMatch: "REPLACE_ALL",
+      textValue: "T",
+      matchOperator: "NONE"
+    }
+  };
+​
+  restClient.getAuthToken().then(res => {
+    console.log("-----", res.authToken);
+    var authHeader = { Authorization: res.authToken };
+    restClient
+      .makePostCall("campaigns/test-12345/email", authHeader, email_payload)
+      .then(res => {
+        console.log("------------123", res);
+      });
+  });
+});
+
 server.listen(process.env.PORT || 8000, function() { });
