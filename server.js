@@ -195,7 +195,7 @@ function updateEmailTemplate(productDetails) {
   <title>Price reduced...</title>
   </head>
   <body>
-  <h3>CoAxial Audio cables  is on <em>SALE</em></h3>
+  <h3>Coaxial Audio Cable is on <em>SALE</em></h3>
   <h2>BUY @ $${productDetails.listPrice}</h1>
   <h3>Hurry Up, This Offer is valid till ${offerEndDate}</h1>
   </body>
