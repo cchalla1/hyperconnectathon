@@ -164,7 +164,6 @@ function generateMergeTriggerRecordsForEmails(emailList) {
   };
   return emailList.map(mapRecordsFun);
 }
-​
 function updateEmailTemplate(productDetails) {
   var offerEndDate = new Date(productDetails.endDate);
   var emailContent = `
@@ -207,7 +206,6 @@ app.post("/chads/email", function(req, res) {
     return;
   }
   console.log("req.body-----", req.body);
-​
   var productDetails = req.body.organizationRequest;
   var emailList = product_emailMap[productDetails["productId"]];
   console.log("emailList for ", emailList);
@@ -233,7 +231,6 @@ app.post("/chads/email", function(req, res) {
       matchOperator: "NONE"
     }
   };
-​
   restClient.getAuthToken().then(res => {
     console.log("-----", res.authToken);
     var authHeader = { Authorization: res.authToken };
@@ -244,5 +241,4 @@ app.post("/chads/email", function(req, res) {
       });
   });
 });
-
 server.listen(process.env.PORT || 8000, function() { });
