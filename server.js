@@ -197,7 +197,7 @@ function updateEmailTemplate(productDetails) {
   <body>
   <h3>Coaxial Audio Cable is on <em>SALE</em></h3>
   <a href="http://busgk0712.us.oracle.com:8080/coaxial-audio-cable/product/prod10027">
-  <img src="http://busgk0712.us.oracle.com:8080/ccstore/v1/images/?source=/file/v978911732589130808/products/coaxialcable_LARGE.jpg&height=475&width=475"/>
+  <img src="http://busgk0712.us.oracle.com:8080/ccstore/v1/images/?source=/file/v978911732589130808/products/coaxialcable_LARGE.jpg&height=300&width=300"/>
   </a>
   <h2>BUY @ $${productDetails.listPrice}</h1>
   <h3>Hurry Up, This Offer is valid till ${offerEndDate}</h1>
