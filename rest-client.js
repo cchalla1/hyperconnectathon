@@ -2,7 +2,7 @@ const request = require("request");
 
 const server_URL = "https://api-004.eng1.responsys.net/rest/api/v1.3/";
 
-let is_proxy_enabled = true;
+let is_proxy_enabled = process.env.PORT != 8000 ? false : true;
 
 function setProxy(options) {
   if (is_proxy_enabled) {
