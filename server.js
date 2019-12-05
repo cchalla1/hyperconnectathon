@@ -128,7 +128,6 @@ app.get("/getProductForPage", (req, res) =>{
 });
 
 var product_emailMap = {};
-​
 function createProductEmailMapping(details) {
   var orgRequest = details.organizationRequest;
   var ownerOfPurchaseList = orgRequest.owner;
