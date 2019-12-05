@@ -80,7 +80,8 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
   });
 })
 
-app.get("/getProductForPage", (req, res) =>{   
+app.get("/getMostViewedPage", (req, res) =>{
+  var request = require("request");
   var username = 'abhishek.a.karmakar@oracle.com';
   var pass = 'Oracle@123';
   var auth = 'Basic ' + new Buffer(username + ":" + pass).toString("base64");
@@ -92,39 +93,15 @@ app.get("/getProductForPage", (req, res) =>{
   timezone: 'Asia/Calcutta' },
   headers: { Authorization: auth } };
   request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+    if (error) throw new Error(error);
     
-    for(var i=0;i<JSON.parse(response.body).dimensions.length;i++){
-        
-      if (JSON.parse(response.body).dimensions[i].value === req.query["page"]) {
-        var options = {
-          method: 'GET',
-          url: 'http://busgk0712.us.oracle.com:8080/ccstoreui/v1/products',
-          qs: {
-            totalResults: 'true',
-            catalogId: 'cloudLakeCatalog',
-            offset: '0',
-            limit: '13',
-            sort: 'creationDate:desc',
-            includeChildren: 'true',
-            preFilter: 'true',
-            fields: 'id,displayName,creationDate'
-          }
-        };
-
-        request(options, function (error, response, body) {
-          if (error) throw new Error(error);
-          console.log(response.body);
-          if (req.query) {
-            res.status(200).json(JSON.parse(response.body).items.slice(0, req.query["count"]));
-          } else {
-            res.status(200).json(JSON.parse(response.body).items[0]);
-          }
-        });
-      }
+    if(req.query){
+        res.status(200).json(JSON.parse(response.body).dimensions.slice(0, req.query["count"]));
+    }else{
+        res.status(200).json(JSON.parse(response.body).dimensions[0].value);
     }
+    
   });
-  
 });
 
 var product_emailMap = {};
