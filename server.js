@@ -1,5 +1,6 @@
 const request = require("request");
 const http = require('http');
+http.globalAgent.options.ca = require('ssl-root-cas').create();
 const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
