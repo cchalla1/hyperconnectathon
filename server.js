@@ -188,7 +188,7 @@ function updateEmailTemplate(productDetails) {
   var emailContent = `
   <html>
   <style>
-  body { background-color: linen;}h1,h2,h3 {color: maroon;  margin-left: 40px;}
+  body { background-color: linen;}h1,h2,h3,img {color: maroon;  margin-left: 40px;}
   em{color:RED}
   </style>
   <head>
@@ -230,6 +230,10 @@ app.post("/chads/email", function(req, res) {
   console.log("req.body-----", req.body);
   var productDetails = req.body.organizationRequest;
   var emailList = product_emailMap[productDetails["productId"]];
+  emailList.push("diwakara.kammara@oracle.com");
+  emailList.push("chandrakanth.challa@oracle.com");
+  emailList.push("hari.pala@oracle.com");
+  emailList.push("abhishek.a.karmakar@oracle.com");
   console.log("emailList for ", emailList);
   updateEmailTemplate(productDetails);
   var records = generateMergeTriggerRecordsForEmails(emailList);
