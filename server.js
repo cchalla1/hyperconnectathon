@@ -230,10 +230,6 @@ app.post("/chads/email", function(req, res) {
   console.log("req.body-----", req.body);
   var productDetails = req.body.organizationRequest;
   var emailList = product_emailMap[productDetails["productId"]];
-  emailList.push("diwakara.kammara@oracle.com");
-  emailList.push("chandrakanth.challa@oracle.com");
-  emailList.push("hari.pala@oracle.com");
-  emailList.push("abhishek.a.karmakar@oracle.com");
   console.log("emailList for ", emailList);
   updateEmailTemplate(productDetails);
   var records = generateMergeTriggerRecordsForEmails(emailList);
