@@ -1,6 +1,7 @@
 const request = require("request");
 
-const server_URL = "https://api-004.eng1.responsys.net/rest/api/v1.3/";
+var server_URL = "https://api-004.stage3.responsys.net/rest/api/v1.3/";
+var login_URL="https://login.stage3.responsys.net/rest/api/v1.3/";
 
 let is_proxy_enabled = process.env.PORT != 8000 ? false : true;
 
@@ -12,14 +13,14 @@ function setProxy(options) {
 
 function getAuthToken() {
   var payload = {
-    user_name: "admin@deepaktest",
+    user_name: "ws_stage3qa66",
     password: "Welcome1234!",
     auth_type: "password"
   };
 
   var options = {
     method: "POST",
-    url: server_URL + "/auth/token",
+    url: login_URL + "/auth/token",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
@@ -28,6 +29,7 @@ function getAuthToken() {
 
   setProxy(options);
   return new Promise(function(resolve, reject) {
+    console.log("-------------->",payload);
     request(options, function(error, response, body) {
       if (error) console.log(error);
       resolve(JSON.parse(body));
