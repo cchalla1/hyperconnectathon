@@ -192,13 +192,13 @@ function updateEmailTemplate(productDetails) {
   <head>
   <title>Price reduced...</title>
   </head>
-  <body>
-  <h3>Bose Frames Audio Sunglasses, Alto - M/L is on <em>SALE</em></h3>
+  <body style="background-color: linen;">
+  <h3 style="color: maroon;  margin-left: 40px;">Bose Frames Audio Sunglasses, Alto - M/L is on <em>SALE</em></h3>
   <a href="http://busgk0712.us.oracle.com:8080/bose-frames-audio-sunglasses-alto-m-l/product/bose9">
-  <img src="https://images-na.ssl-images-amazon.com/images/I/61n73zzNnQL._SL1500_.jpg" style="height:200px; width:200px"/>
+  <img style="margin-left: 40px; height:200px; width:200px" src="https://images-na.ssl-images-amazon.com/images/I/61n73zzNnQL._SL1500_.jpg"/>
   </a>
-  <h2>BUY @ $${productDetails.listPrice}</h1>
-  <h3>Hurry Up, This Offer is valid till ${offerEndDate}</h1>
+  <h2 style="color: maroon;  margin-left: 40px;">BUY @ $${productDetails.listPrice}</h2>
+  <h3 style="color: maroon;  margin-left: 40px;">Hurry Up, This Offer is valid till ${offerEndDate}</h3>
   </body>
   </html>`;
   var payLoad = {
