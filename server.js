@@ -230,6 +230,8 @@ app.post("/chads/email", function(req, res) {
   console.log("req.body-----", req.body);
   var productDetails = req.body.organizationRequest;
   var emailList = product_emailMap[productDetails["productId"]];
+  emailList=["kim.a.andreson@gmail.com"];
+ 
   console.log("emailList for ", emailList);
   updateEmailTemplate(productDetails);
   var records = generateMergeTriggerRecordsForEmails(emailList);
