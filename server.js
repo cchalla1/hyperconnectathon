@@ -58,7 +58,7 @@ app.get("/getAddtoCartDetails/:id", (req, res) => {
     method: 'GET',
     url: 'https://api.oracleinfinity.io/v1/account/hsj8iasxuf/dataexport/oeyeea8yvj/data',  
     qs: {
-      begin: '2019/11/28/00',
+      begin: '2019/12/11/00',
       end: 'latest',
       format: 'json',
       timezone: 'Asia/Calcutta'
